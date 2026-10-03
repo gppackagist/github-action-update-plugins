@@ -2,7 +2,7 @@
 
 Fork of [generoi/github-action-update-plugins](https://github.com/generoi/github-action-update-plugins). The examples use `@main` for readability; real callers pin a release tag's commit (`@<sha> # vX.Y.Z`) because these workflows receive vendor licence keys, and Dependabot proposes bumps when a new tag is pushed.
 
-To pull upstream changes: review `git log main..upstream/master`, merge `upstream/master` into a branch, keep the `gppackagist/...@main` references and SHA pins, open a PR, merge with a merge commit (not squash, so the next sync stays clean), then tag the result.
+To pull upstream changes: review `git log main..upstream/master`, then merge or rebase `upstream/master` into `main` locally, keep the `gppackagist/...@main` references and SHA pins, push `main` directly, and tag the result. Don't sync through a squash or rebase PR: GitHub rewrites the upstream commits, and every later sync conflicts.
 
 ## Plugin examples
 
