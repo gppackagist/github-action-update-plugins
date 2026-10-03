@@ -1,0 +1,89 @@
+name: TotalSuite
+on:
+  workflow_call:
+    inputs:
+      slug:
+        description: "TotalSuite product name, e.g. totalcontest or totalpoll"
+        required: true
+        type: string
+      domain:
+        description: "Domain the licence is activated on; the download endpoint checks it"
+        required: true
+        type: string
+    outputs:
+      updated:
+        description: "If the update didnt exist and was built"
+        value: ${{ jobs.build.outputs.updated }}
+      version:
+        description: "The updated version"
+        value: ${{ jobs.build.outputs.version }}
+    secrets:
+      LICENSE_KEY:
+        required: true
+
+jobs:
+  build:
+    name: Update plugin
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      updated: ${{ steps.update.outputs.updated }}
+      version: ${{ steps.update.outputs.version }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Retrieve the latest version
+        env:
+          LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
+        run: |
+          if ! curl -sS \
+            --retry 5 --retry-delay 20 --retry-all-errors \
+            --connect-timeout 15 --max-time 60 \
+            --get \
+            --data-urlencode "license=$LICENSE_KEY" \
+            --data-urlencode "domain=${{ inputs.domain }}" \
+            "https://totalsuite.net/api/v2/products/${{ inputs.slug }}/update/" \
+            > /tmp/remote-response.json
+          then
+            echo "::error title=Could not reach totalsuite.net::The update endpoint did not answer for '${{ inputs.slug }}' after 6 attempts. This is a vendor outage, not a repository problem."
+            exit 1
+          fi
+
+          version=$(jq -r '.new_version // empty' /tmp/remote-response.json 2>/dev/null || true)
+          if [ -z "$version" ]; then
+            echo "::error title=Bad update response from totalsuite.net::No new_version in the response for '${{ inputs.slug }}'. First 200 bytes: $(head -c 200 /tmp/remote-response.json)"
+            exit 1
+          fi
+          echo "LATEST_VERSION=$version" >> "$GITHUB_ENV"
+          echo "Update response OK - ${{ inputs.slug }} reports version $version."
+
+      # The endpoint returns a package URL even for an invalid licence, so a bad
+      # key only shows up as a non-zip download. Check before the update action
+      # runs `git rm -rf .` on the checkout.
+      - name: Download the package
+        env:
+          LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
+        run: |
+          git fetch --quiet --tags
+          if git show-ref --tags --verify --quiet "refs/tags/$LATEST_VERSION"; then
+            echo "$LATEST_VERSION is already mirrored."
+            exit 0
+          fi
+
+          curl -sSL --retry 3 --retry-delay 10 --max-time 300 \
+            "$(jq -r .package /tmp/remote-response.json)" \
+            --output /tmp/package.zip
+
+          if ! unzip -tq /tmp/package.zip >/dev/null 2>&1; then
+            echo "::error title=TotalSuite download is not a zip::The package for '${{ inputs.slug }}' $LATEST_VERSION is not a valid archive, which usually means the licence key is invalid or not activated on ${{ inputs.domain }}. First 200 bytes: $(head -c 200 /tmp/package.zip)"
+            exit 1
+          fi
+
+      - name: Update repo
+        uses: gppackagist/github-action-update-plugins@main
+        id: update
+        with:
+          download_path: /tmp/package.zip
+          version: ${{ env.LATEST_VERSION }}

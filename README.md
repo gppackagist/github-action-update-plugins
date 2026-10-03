@@ -512,6 +512,33 @@ jobs:
 
 </details>
 
+### TotalSuite
+
+_The licence must be activated on `domain` before downloads work._
+
+<details>
+<summary>TotalContest</summary>
+
+```yml
+name: Build
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 4 * * *'
+permissions:
+  contents: write
+jobs:
+  build:
+    uses: gppackagist/github-action-update-plugins/.github/workflows/totalsuite-update.yml@main
+    secrets:
+      LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
+    with:
+      slug: totalcontest
+      domain: example.com
+```
+
+</details>
+
 ### Beaver Builder
 
 <details>
