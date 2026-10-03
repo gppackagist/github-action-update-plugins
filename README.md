@@ -1,5 +1,9 @@
 # github-workflows-plugins
 
+Fork of [generoi/github-action-update-plugins](https://github.com/generoi/github-action-update-plugins). The examples use `@main` for readability; real callers pin a release tag's commit (`@<sha> # vX.Y.Z`) because these workflows receive vendor licence keys, and Dependabot proposes bumps when a new tag is pushed.
+
+To pull upstream changes: review `git log main..upstream/master`, merge `upstream/master` into a branch, keep the `gppackagist/...@main` references and SHA pins, open a PR, merge with a merge commit (not squash, so the next sync stays clean), then tag the result.
+
 ## Plugin examples
 
 ### Gravityforms
@@ -17,7 +21,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/gravityforms-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/gravityforms-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -41,7 +45,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/gravityforms-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/gravityforms-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -64,7 +68,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/facetwp-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/facetwp-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -87,7 +91,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/facetwp-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/facetwp-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -114,7 +118,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/edd-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/edd-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -138,7 +142,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/edd-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/edd-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -164,7 +168,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/edd-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/edd-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -191,7 +195,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/acf-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/acf-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
 ```
@@ -215,7 +219,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wccom-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wccom-update.yml@main
     secrets:
       ACCESS_TOKEN: ${{ secrets.WCCOM_ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.WCCOM_ACCESS_TOKEN_SECRET }}
@@ -238,7 +242,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wccom-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wccom-update.yml@main
     secrets:
       ACCESS_TOKEN: ${{ secrets.WCCOM_ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.WCCOM_ACCESS_TOKEN_SECRET }}
@@ -261,7 +265,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wccom-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wccom-update.yml@main
     secrets:
       ACCESS_TOKEN: ${{ secrets.WCCOM_ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.WCCOM_ACCESS_TOKEN_SECRET }}
@@ -284,7 +288,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wccom-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wccom-update.yml@main
     secrets:
       ACCESS_TOKEN: ${{ secrets.WCCOM_ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.WCCOM_ACCESS_TOKEN_SECRET }}
@@ -307,7 +311,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wccom-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wccom-update.yml@main
     secrets:
       ACCESS_TOKEN: ${{ secrets.WCCOM_ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.WCCOM_ACCESS_TOKEN_SECRET }}
@@ -330,7 +334,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wccom-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wccom-update.yml@main
     secrets:
       ACCESS_TOKEN: ${{ secrets.WCCOM_ACCESS_TOKEN }}
       ACCESS_TOKEN_SECRET: ${{ secrets.WCCOM_ACCESS_TOKEN_SECRET }}
@@ -356,7 +360,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wpml-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wpml-update.yml@main
     secrets:
       USER_ID: ${{ secrets.USER_ID }}
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
@@ -379,7 +383,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/wpml-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/wpml-update.yml@main
     secrets:
       USER_ID: ${{ secrets.USER_ID }}
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
@@ -404,7 +408,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/markup-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/markup-update.yml@main
     with:
       slug: 'woocommerce-noutopistehaku'
       source_url: https://example.com
@@ -427,7 +431,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/markup-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/markup-update.yml@main
     with:
       slug: 'woocommerce-kuitti'
       source_url: https://example.com
@@ -452,7 +456,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/markup-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/markup-update.yml@main
     with:
       slug: 'woocommerce-smartship-prinetti'
       source_url: https://example.com
@@ -478,7 +482,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/markup-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/markup-update.yml@main
     with:
       slug: 'woocommerce-paytrail'
 ```
@@ -498,7 +502,7 @@ on:
     - cron: '5 4 * * *'
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/multilingualpress-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/multilingualpress-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -523,7 +527,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/beaver-builder-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/beaver-builder-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
     with:
@@ -573,7 +577,7 @@ jobs:
 
 
       - name: Update repo
-        uses: generoi/github-action-update-plugins@master
+        uses: gppackagist/github-action-update-plugins@main
         id: update
         with:
           download_path: /tmp/package.zip
@@ -624,7 +628,7 @@ jobs:
           rm package.zip
 
       - name: Update repo
-        uses: generoi/github-action-update-plugins@master
+        uses: gppackagist/github-action-update-plugins@main
         id: update
         with:
           download_url: "https://kinsta.com/kinsta-tools/kinsta-mu-plugins.zip"
@@ -669,7 +673,7 @@ jobs:
           rm package.zip
 
       - name: Update repo
-        uses: generoi/github-action-update-plugins@master
+        uses: gppackagist/github-action-update-plugins@main
         id: update
         with:
           download_url: "https://www.relevanssi.com/update/get_version.php?api_key=${{ secrets.LICENSE_KEY }}&version=${{ env.LATEST_VERSION }}"
@@ -698,7 +702,7 @@ permissions:
   contents: write
 jobs:
   build:
-    uses: generoi/github-action-update-plugins/.github/workflows/acf-update.yml@master
+    uses: gppackagist/github-action-update-plugins/.github/workflows/acf-update.yml@main
     secrets:
       LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
   update-satis:

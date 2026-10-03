@@ -55,10 +55,10 @@ jobs:
       version: ${{ steps.update.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
 
       # See https://easydigitaldownloads.com/docs/software-licensing-api/
       #
@@ -161,7 +161,7 @@ jobs:
           fi
 
       - name: Convert changelog to markdown
-        uses: docker://pandoc/core:2.9
+        uses: docker://pandoc/core:2.9@sha256:a98725012a960ec77310acef038b57c82b9375bf65ae761d93146448c6e53a31
         with:
           args: >-
             --from=html
@@ -207,7 +207,7 @@ jobs:
           cat /tmp/changelog.md
 
       - name: Update repo
-        uses: generoi/github-action-update-plugins@master
+        uses: gppackagist/github-action-update-plugins@main
         id: update
         with:
           download_url: ${{ fromJson(steps.remote.outputs.REMOTE_RESPONSE).download_link }}

@@ -39,17 +39,17 @@ jobs:
       version: ${{ steps.update.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Checkout action scripts
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
-          repository: generoi/github-action-update-plugins
-          ref: master
+          repository: gppackagist/github-action-update-plugins
+          ref: main
           path: .github-action-update-plugins
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
 
       - name: Fetch latest version and download URL
         id: remote
@@ -67,7 +67,7 @@ jobs:
           echo "New version: ${{ steps.remote.outputs.version }}"
 
       - name: Update repo
-        uses: generoi/github-action-update-plugins@master
+        uses: gppackagist/github-action-update-plugins@main
         id: update
         with:
           download_url: ${{ steps.remote.outputs.download_url }}

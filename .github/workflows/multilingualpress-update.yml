@@ -36,7 +36,7 @@ jobs:
       version: ${{ steps.update.outputs.version }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Retrieve the license information
         if:
@@ -57,7 +57,7 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: Update repo
-        uses: generoi/github-action-update-plugins@master
+        uses: gppackagist/github-action-update-plugins@main
         id: update
         with:
           download_url: ${{ fromJson(env.REMOTE_RESPONSE).package }}
