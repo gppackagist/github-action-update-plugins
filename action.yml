@@ -83,21 +83,44 @@ runs:
         sudo apt-get update
         sudo apt-get install -y libarchive-tools
 
-    - name: Download and extract the package
+    # Vendors answer a bad licence, an expired subscription, or a rate limit
+    # with an HTML or JSON error page, often with HTTP 200. Extracting that
+    # fails in bsdtar ("Unrecognized archive format") only after the checkout
+    # has been wiped, and the log never shows what the vendor actually said.
+    # sitepress-multilingual-cms failed this way on 2026-10-03.
+    # So fetch and verify the package before anything destructive runs.
+    - name: Download the package
+      if: env.RUN_BUILD == 'true'
+      shell: bash
+      run: |
+        package="$RUNNER_TEMP/package.zip"
+
+        if [ -n "${{ inputs.download_url }}" ]; then
+          status=$(curl --location --silent --show-error --output "$package" --write-out '%{http_code}' '${{ inputs.download_url }}')
+        else
+          status=local
+          mv "${{ inputs.download_path }}" "$package"
+        fi
+
+        # An empty body lists as a valid empty archive, so require an entry.
+        if ! listing=$(bsdtar -tf "$package" 2>/dev/null) || [ -z "$listing" ]; then
+          echo "::error title=Package is not an archive::The package for version ${{ inputs.version }} (HTTP $status, $(wc -c < "$package") bytes) is not a readable archive. This usually means the vendor returned an error page: check the licence key and subscription. The checkout was left untouched. First 500 bytes follow."
+          head -c 500 "$package"
+          echo
+          exit 1
+        fi
+
+        echo "PACKAGE_PATH=$package" >> "$GITHUB_ENV"
+
+    - name: Extract the package
       if: env.RUN_BUILD == 'true'
       shell: bash
       run: |
         git rm -rf .
         git clean -fxd
 
-        if [ ! -z "${{ inputs.download_url }}" ]; then
-          curl -L '${{ inputs.download_url }}' > package.zip
-        else
-          mv "${{ inputs.download_path }}" package.zip
-        fi
-
-        bsdtar --strip-components=${{ inputs.strip_archive_folder == 'true' && 1 || 0 }} -xvf package.zip
-        rm package.zip
+        bsdtar --strip-components=${{ inputs.strip_archive_folder == 'true' && 1 || 0 }} -xvf "$PACKAGE_PATH"
+        rm "$PACKAGE_PATH"
         git reset HEAD composer.json .github
         git checkout -- composer.json .github
         git add .
