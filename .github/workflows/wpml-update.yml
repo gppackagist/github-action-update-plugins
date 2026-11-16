@@ -49,12 +49,13 @@ jobs:
             curl -s -X GET 'http://d2salfytceyqoe.cloudfront.net/wpml33-products.json' | jq -r '.downloads.plugins."${{ inputs.slug }}".changelog'
           } > changelog.html
 
+      # -smart: with it, pandoc escapes every straight quote as \' or \" in the notes.
       - name: Convert changelog to markdown
         uses: docker://pandoc/core:2.9
         with:
           args: >-
             --from=html
-            --to=markdown
+            --to=markdown-smart
             --output=changelog.md
             changelog.html
 
